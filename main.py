@@ -11,7 +11,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-
+# CORS settings
 app.add_middleware(
     CORSMiddleware,
     allow_origins=['*'],
@@ -20,13 +20,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 @app.get('/')
 async def root():
     return {"message": "Server is running"}
 
+# Include calculator routes
 app.include_router(calculator_router, prefix="/calculate", tags=["calculate"])
-
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host=SERVER_URL, port=int(PORT), reload=(ENV == "dev"))
